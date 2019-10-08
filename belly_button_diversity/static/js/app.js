@@ -1,29 +1,63 @@
+
 function buildMetadata(sample) {
+  var sampleMeta = "/metadata/" + sample;
+  console.log(sampleMeta);
 
-  // @TODO: Complete the following function that builds the metadata panel
-
-  // Use `d3.json` to fetch the metadata for a sample
-    // Use d3 to select the panel with id of `#sample-metadata`
-
-    // Use `.html("") to clear any existing metadata
-
-    // Use `Object.entries` to add each key and value pair to the panel
-    // Hint: Inside the loop, you will need to use d3 to append new
-    // tags for each key-value in the metadata.
-
-    // BONUS: Build the Gauge Chart
-    // buildGauge(data.WFREQ);
+  d3.json(sampleMeta).then(function(response) {
+    var panelData = d3.select("#sample-metadata");
+    var newData = [response]
+    panelData.html("");
+    newData.forEach (function(data) {
+      Object.entries(data).forEach(([key, value]) => {
+      var row = panelData.append("tr");
+      row.append("td").html(`<strong><font size = '1.0'>${key}</font></strong>:`);
+      row.append("td").html(`<font size = '1.0'>${value}</font>`);
+      })
+    });
+  });   
 }
 
 function buildCharts(sample) {
+  var chartData = "/samples/" + sample;
+  d3.json(chartData).then(function(i) {
+      var trace1 = {
+      mode: 'markers',
+      text: i.otu_labels,
+      x: i.otu_ids,
+      y: i.sample_values,
+      marker: {
+      size: i.sample_values,
+      color: i.otu_ids,
+      }
+    }
 
-  // @TODO: Use `d3.json` to fetch the sample data for the plots
+      var bubData = [trace1];
+      var bubLayout = {
+      width: 1000,
+      height: 600,
+      title: "Bubble Chart"
+    };
 
-    // @TODO: Build a Bubble Chart using the sample data
+    Plotly.newPlot("bubble", bubData, bubLayout);
 
-    // @TODO: Build a Pie Chart
-    // HINT: You will need to use slice() to grab the top 10 sample_values,
-    // otu_ids, and labels (10 each).
+  
+      var trace2 = {
+      values: i.sample_values.slice(0,10),
+      hovertext: i.otu_labels.slice(0,10),
+      labels: i.otu_ids.slice(0,10),
+      type: "pie",
+    };
+
+    var pieData = [trace2];
+    var pieLayout = {
+    height: 550,
+    title: "Pie Chart - Top 10 Samples",
+    width: 550
+     
+     
+    }
+    Plotly.newPlot('pie', pieData, pieLayout);
+  });
 }
 
 function init() {
