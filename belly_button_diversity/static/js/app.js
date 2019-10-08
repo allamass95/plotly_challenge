@@ -20,7 +20,7 @@ function buildMetadata(sample) {
 function buildCharts(sample) {
   var chartData = "/samples/" + sample;
   d3.json(chartData).then(function(i) {
-      var trace1 = {
+      var traceOne = {
       mode: 'markers',
       text: i.otu_labels,
       x: i.otu_ids,
@@ -31,7 +31,7 @@ function buildCharts(sample) {
       }
     }
 
-      var bubData = [trace1];
+      var bubData = [traceOne];
       var bubLayout = {
       width: 1000,
       height: 600,
@@ -41,14 +41,14 @@ function buildCharts(sample) {
     Plotly.newPlot("bubble", bubData, bubLayout);
 
   
-      var trace2 = {
+      var traceTwo = {
       values: i.sample_values.slice(0,10),
       hovertext: i.otu_labels.slice(0,10),
       labels: i.otu_ids.slice(0,10),
       type: "pie",
     };
 
-    var pieData = [trace2];
+    var pieData = [traceTwo];
     var pieLayout = {
     height: 550,
     title: "Pie Chart - samples",
