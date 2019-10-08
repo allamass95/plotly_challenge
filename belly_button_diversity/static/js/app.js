@@ -51,7 +51,7 @@ function buildCharts(sample) {
     var pieData = [trace2];
     var pieLayout = {
     height: 550,
-    title: "Pie Chart - Top 10 Samples",
+    title: "Pie Chart - samples",
     width: 550
      
      
